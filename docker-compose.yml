@@ -20,7 +20,7 @@ services:
   client:
     build: ./containers/client
     container_name: client
-    command: "npm start"
+    command: "yarn dev"
     image: next-app
     volumes:
       - ./client:/app
