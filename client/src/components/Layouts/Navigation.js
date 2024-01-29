@@ -108,9 +108,9 @@ const Navigation = ({ user }) => {
                 <div className="block sm:hidden">
                     <div className="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink
-                            href="/dashboard"
-                            active={router.pathname === '/dashboard'}>
-                            Dashboard
+                            href="/home"
+                            active={router.pathname === '/home'}>
+                            home
                         </ResponsiveNavLink>
                     </div>
 
