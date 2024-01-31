@@ -6,6 +6,6 @@ export default async function handler(req, res) {
     res.status(200).json(response.data);
   } catch (err) {
     console.log(err)
-    res.status(500).json('エラーが発生しました', err);
+    res.status(500).json({ message: 'エラーが発生しました' });
   }
 }
