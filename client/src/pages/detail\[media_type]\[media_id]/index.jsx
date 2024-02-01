@@ -4,7 +4,8 @@ import Head from 'next/head'
 import { Box, Container, Grid, Typography } from '@mui/material'
 import AppLayout from '@/components/Layouts/AppLayout'
 
-const Detail = ({ detail }) => {
+// フロント表示
+const Detail = ({ detail, media_type, media_id }) => {
     console.log(detail)
     return (
         <AppLayout
@@ -65,11 +66,13 @@ const Detail = ({ detail }) => {
                         </Grid>
                         <Grid item md={8}>
                             <Typography variant="h4" paragraph>
-                                {detail.title}
+                                {detail.title || detail.name}
                             </Typography>
                             <Typography paragraph>{detail.overview}</Typography>
                             <Typography variant="h6">
-                                公開日：{detail.release_date}
+                                {media_type == 'movie'
+                                    ? `公開日：${detail.release_date}`
+                                    : `初回放送日：${detail.first_air_date}`}
                             </Typography>
                         </Grid>
                     </Grid>
@@ -79,6 +82,7 @@ const Detail = ({ detail }) => {
     )
 }
 
+// サーバー側API通信
 export async function getServerSideProps(context) {
     const { media_type, media_id } = context.params
 
@@ -96,11 +100,7 @@ export async function getServerSideProps(context) {
         }
 
         return {
-            props: { detail: combinedData },
-        }
-
-        return {
-            props: { detail: fetchData },
+            props: { detail: combinedData, media_type, media_id },
         }
     } catch {
         return { notFound: true }
