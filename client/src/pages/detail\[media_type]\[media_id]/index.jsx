@@ -1,12 +1,62 @@
-import React from 'react'
+import { React, useEffect } from 'react'
 import axios from 'axios'
 import Head from 'next/head'
-import { Box, Container, Grid, Typography } from '@mui/material'
+import {
+    Box,
+    Container,
+    Grid,
+    Typography,
+    Rating,
+    Card,
+    CardContent,
+} from '@mui/material'
 import AppLayout from '@/components/Layouts/AppLayout'
+import laravelAxios from '@/lib/laravelAxios'
 
 // フロント表示
 const Detail = ({ detail, media_type, media_id }) => {
-    console.log(detail)
+    const reviews = [
+        {
+            id: '1',
+            content: '面白かった',
+            rating: 3,
+            user: {
+                name: '山田',
+            },
+        },
+        {
+            id: '2',
+            content: '微妙',
+            rating: 2,
+            user: {
+                name: '棚k',
+            },
+        },
+        {
+            id: '3',
+            content: '面白かった',
+            rating: 5,
+            user: {
+                name: '治郎',
+            },
+        },
+    ]
+
+    // const [reviews, setReviews] = useState([])
+    useEffect(() => {
+        const fetchReviews = async () => {
+            try {
+                const response = await laravelAxios.get(
+                    `/api/reviews/${media_type}/${media_id}`,
+                )
+                // setReviews(response.data)
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        fetchReviews()
+    }, [media_type, media_id])
+
     return (
         <AppLayout
             header={
@@ -17,6 +67,8 @@ const Detail = ({ detail, media_type, media_id }) => {
             <Head>
                 <title>Laravel - Detail</title>
             </Head>
+
+            {/* 映画情報ここから */}
             <Box
                 sx={{
                     height: { xs: 'auto', md: '70vh' },
@@ -78,6 +130,42 @@ const Detail = ({ detail, media_type, media_id }) => {
                     </Grid>
                 </Container>
             </Box>
+            {/* 映画情報ここまで */}
+
+            {/*  レビュー情報 */}
+            <Container sx={{ py: 4 }}>
+                <Typography
+                    component={'h1'}
+                    variant="h4"
+                    align="center"
+                    gutterBottom>
+                    レビュー一覧
+                </Typography>
+
+                <Grid container spacing={3}>
+                    {reviews.map(review => (
+                        <Grid item xs={12} key={review.id}>
+                            <Card>
+                                <CardContent>
+                                    <Typography
+                                        variant="h6"
+                                        component={'div'}
+                                        gutterBottom>
+                                        {review.user.name}
+                                    </Typography>
+                                    <Rating value={review.rating} readOnly />
+                                    <Typography
+                                        valiant="body2"
+                                        color="textSecondary"
+                                        paragraph>
+                                        {review.content}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    ))}
+                </Grid>
+            </Container>
         </AppLayout>
     )
 }

@@ -20,4 +20,4 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 
-Route::get('reviews', [ReviewController::class, 'index']);
+Route::get('reviews/{media_type}/{media_id}', [ReviewController::class, 'index']);

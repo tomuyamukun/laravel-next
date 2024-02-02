@@ -41,4 +41,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    /**
+     * userは複数のreviewを持つ
+     */
+    public function reviews() {
+        return $this->hasMany(Review::class);
+    }
 }

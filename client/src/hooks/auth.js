@@ -1,5 +1,5 @@
 import useSWR from 'swr'
-import LaravelAxios from '@/lib/laravelAaxios'
+import laravelAxios from '@/lib/laravelAxios'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
