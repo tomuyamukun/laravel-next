@@ -36,3 +36,11 @@ services:
 
 volumes:
   db-store:
+  mutagen-volume:
+
+x-mutagen:
+  sync:
+    mutagen-volume:
+      mode: "two-way-resolved" # 同期モード指定（ホスト　↔　コンテナ　双方を同期）
+      alpha: "./code" # プロジェクトのパス
+      beta: "volume://mutagen-volume" # volumeの指定

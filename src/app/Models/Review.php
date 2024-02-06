@@ -10,6 +10,14 @@ class Review extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        "content",
+        "rating",
+        "media_id",
+        "media_type",
+        "user_id",
+    ];
+
     /**
      * reviewは一人のuserのリレーション
      */

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->bigInteger('media_id');
             $table->string('media_type');
+            $table->timestamp('updated_at');
+            $table->timestamp('created_at');
         });
     }
 
