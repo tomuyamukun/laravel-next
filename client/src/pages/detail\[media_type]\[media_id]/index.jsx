@@ -14,7 +14,9 @@ import {
     TextareaAutosize,
     Fab,
     ButtonGroup,
+    IconButton,
 } from '@mui/material'
+import FavoriteIcon from '@mui/icons-material/Favorite'
 import AppLayout from '@/components/Layouts/AppLayout'
 import laravelAxios from '@/lib/laravelAxios'
 import AddIcon from '@mui/icons-material/Add'
@@ -37,6 +39,9 @@ const Detail = ({ detail, media_type, media_id }) => {
     const [editMode, setEditMode] = useState(null)
     const [editedRating, setEditedRating] = useState(null)
     const [editedContent, setEditedContent] = useState('')
+
+    // お気に入りのState
+    const [isFavorite, setIsFavorite] = useState(false)
 
     const handleOpen = () => {
         setOpen(true)
@@ -155,15 +160,36 @@ const Detail = ({ detail, media_type, media_id }) => {
         }
     }
 
+    // お気に入りボタン押したときの処理
+    const handleToggleFavorite = async () => {
+        try {
+            const response = await laravelAxios.post(`api/favorites`, {
+                media_type: media_type,
+                media_id: media_id,
+            })
+
+            setIsFavorite(response.data.state === 'added')
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     useEffect(() => {
         const fetchReviews = async () => {
             try {
-                const response = await laravelAxios.get(
-                    `/api/reviews/${media_type}/${media_id}`,
-                )
-                const fetchReviews = response.data
+                const [reviewResponse, favoriteResponse] = await Promise.all([
+                    laravelAxios.get(`/api/reviews/${media_type}/${media_id}`),
+                    laravelAxios.get(`/api/favorite/status`, {
+                        params: {
+                            media_type: media_type,
+                            media_id: media_id,
+                        },
+                    }),
+                ])
+                const fetchReviews = reviewResponse.data
                 setReviews(fetchReviews)
                 updateAverageRating(fetchReviews)
+                setIsFavorite(favoriteResponse.data)
             } catch (err) {
                 console.log(err)
             }
@@ -183,6 +209,7 @@ const Detail = ({ detail, media_type, media_id }) => {
             </Head>
 
             {/* 映画情報ここから */}
+            {/* 背景画像 */}
             <Box
                 sx={{
                     height: { xs: 'auto', md: '70vh' },
@@ -215,6 +242,7 @@ const Detail = ({ detail, media_type, media_id }) => {
                         },
                     }}
                 />
+                {/* 作品情報表示 */}
                 <Container sx={{ zIndex: 1 }}>
                     <Grid
                         container
@@ -234,6 +262,16 @@ const Detail = ({ detail, media_type, media_id }) => {
                             <Typography variant="h4" paragraph>
                                 {detail.title || detail.name}
                             </Typography>
+
+                            {/* お気に入りボタン */}
+                            <IconButton
+                                onClick={handleToggleFavorite}
+                                style={{
+                                    color: isFavorite ? 'red' : 'white',
+                                    background: '#0d253f',
+                                }}>
+                                <FavoriteIcon />
+                            </IconButton>
                             <Typography paragraph>{detail.overview}</Typography>
                             <Box
                                 gap={2}
