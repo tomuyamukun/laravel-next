@@ -186,6 +186,7 @@ const Detail = ({ detail, media_type, media_id }) => {
                         },
                     }),
                 ])
+
                 const fetchReviews = reviewResponse.data
                 setReviews(fetchReviews)
                 updateAverageRating(fetchReviews)
@@ -471,7 +472,7 @@ const Detail = ({ detail, media_type, media_id }) => {
 
                     <Button
                         variant="outlined"
-                        disabled={isButtonDisabled}
+                        disabled={isReviewButtonDisabled}
                         onClick={handleReviewAdd}>
                         送信
                     </Button>

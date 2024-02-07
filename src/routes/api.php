@@ -35,6 +35,6 @@ Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
 Route::put('/comments/{comment}', [CommentController::class, 'update']);
 
 // お気に入り機能
-Route::post('/favorite', [FavoriteController::class, 'toggleFavorite']);
+Route::post('/favorites', [FavoriteController::class, 'toggleFavorite']);
 Route::get('/favorite/status', [FavoriteController::class, 'checkFavoriteStatus']);
 

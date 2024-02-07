@@ -31,7 +31,7 @@ class FavoriteController extends Controller
             // お気に入りがない場合
             Favorite::create([
                 'media_type' => $validatedData['media_type'],
-                'media_if' => $validatedData['media_id'],
+                'media_id' => $validatedData['media_id'],
                 'user_id' => Auth::id()
             ]);
         }
