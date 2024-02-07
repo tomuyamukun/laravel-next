@@ -21,6 +21,7 @@ import AddIcon from '@mui/icons-material/Add'
 import Tooltip from '@mui/material/Tooltip'
 import StarIcon from '@mui/icons-material/Star'
 import { useAuth } from '@/hooks/auth'
+import Link from 'next/link'
 
 // フロント表示
 const Detail = ({ detail, media_type, media_id }) => {
@@ -313,18 +314,22 @@ const Detail = ({ detail, media_type, media_id }) => {
                                         </>
                                     ) : (
                                         <>
+                                            {/*編集時出ない場合の見た目 */}
                                             {/* 星 */}
                                             <Rating
                                                 value={review.rating}
                                                 readOnly
                                             />
                                             {/* レビュー内容 */}
-                                            <Typography
-                                                valiant="body2"
-                                                color="textSecondary"
-                                                paragraph>
-                                                {review.content}
-                                            </Typography>
+                                            <Link
+                                                href={`/detail/${media_type}/${media_id}/review/${review.id}`}>
+                                                <Typography
+                                                    valiant="body2"
+                                                    color="textSecondary"
+                                                    paragraph>
+                                                    {review.content}
+                                                </Typography>
+                                            </Link>
                                         </>
                                     )}
 
